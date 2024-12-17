@@ -7,7 +7,7 @@ variable "admin_pass" {
 variable "region" {
   type        = string
   description = "The region to create instrastructure in"
-  default     = "us-west-2"
+  default     = "us-east-2"
 }
 
 variable "public_key" {
