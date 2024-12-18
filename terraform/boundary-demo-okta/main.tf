@@ -201,17 +201,17 @@ resource "boundary_role" "okta_it_role" {
   scope_id       = data.terraform_remote_state.boundary_demo_targets.outputs.it_org_id
   grant_scope_ids = ["children"]
 }
-# Removing as duplicate.  Set in the demo-targets config earlier.
+
 # Set up Permissions to list aliases
-#resource "boundary_role" "list_aliases" {
-#  name          = "list_aliases"
-#  description   = "Role to allow listing aliases"
-#  principal_ids = [boundary_managed_group.it_managed_group.id, boundary_managed_group.pie_managed_group.id, boundary_managed_group.dev_managed_group.id]
-#  grant_strings = [
-#    "ids=*;type=auth-token;actions=read:self",
-#    "ids=*;type=alias;actions=read",
-#    "type=alias;actions=list",
-#    "ids={{.User.Id}};type=user;actions=list-resolvable-aliases"
-#  ]
-#  scope_id      = "global"
-#}
+resource "boundary_role" "list_aliases" {
+  name          = "list_aliases"
+  description   = "Role to allow listing aliases"
+  principal_ids = [boundary_managed_group.it_managed_group.id, boundary_managed_group.pie_managed_group.id, boundary_managed_group.dev_managed_group.id]
+  grant_strings = [
+    "ids=*;type=auth-token;actions=read:self",
+    "ids=*;type=alias;actions=read",
+    "type=alias;actions=list",
+    "ids={{.User.Id}};type=user;actions=list-resolvable-aliases"
+  ]
+  scope_id      = "global"
+}
