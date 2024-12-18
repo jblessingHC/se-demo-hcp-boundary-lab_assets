@@ -5,7 +5,7 @@ provider "okta" {
 
 locals {
   logout_redirect_url = format("%s:%s", data.terraform_remote_state.boundary_demo_init.outputs.boundary_url, "3000")
-  callback_url        = format("%s%s", data.terraform_remote_state.boundary_demo_init.outputs.boundary_url, "/v1/auth-methods/oidc:authenticate:callback")
+  callback_url        = format("%s:%s", data.terraform_remote_state.boundary_demo_init.outputs.boundary_url, "/v1/auth-methods/oidc:authenticate:callback")
 }
 
 resource "random_pet" "okta_password" {
