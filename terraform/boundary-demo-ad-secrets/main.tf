@@ -7,11 +7,11 @@ resource "vault_namespace" "it" {
 resource "vault_ldap_secret_backend" "ad" {
   namespace = vault_namespace.it.path_fq
   path         = "boundary-ad"
-  binddn       = "Administrator@Boundary.lab"
+  binddn       = "administrator@boundary.lab"
   bindpass     = var.admin_pass
   url          = "ldaps://${data.terraform_remote_state.boundary_demo_targets.outputs.dc_ip_address}"
   insecure_tls = "true"
-  userdn       = "CN=Users,DC=Boundary,DC=lab"
+  userdn       = "CN=users,DC=boundary,DC=lab"
   schema       = "ad"
 }
 
