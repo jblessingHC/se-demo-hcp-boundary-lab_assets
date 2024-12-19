@@ -252,7 +252,7 @@ resource "boundary_target" "pie-ssh-cert-target" {
   ]
   egress_worker_filter     = "\"${var.region}\" in \"/tags/region\""
  enable_session_recording = false
- #storage_bucket_id        = boundary_storage_bucket.pie_session_recording_bucket.id
+ storage_bucket_id        = boundary_storage_bucket.pie_session_recording_bucket.id
 }
 
 resource "boundary_alias_target" "pie-ssh-cert-target-alias" {
@@ -276,7 +276,7 @@ resource "boundary_target" "pie-ssh-cert-target-admin" {
   ]
   egress_worker_filter     = "\"${var.region}\" in \"/tags/region\""
  enable_session_recording = false
- #storage_bucket_id        = boundary_storage_bucket.pie_session_recording_bucket.id
+ storage_bucket_id        = boundary_storage_bucket.pie_session_recording_bucket.id
 }
 
 resource "boundary_alias_target" "pie-ssh-cert-target-admin-alias" {
@@ -494,35 +494,35 @@ resource "boundary_alias_target" "it-rdp-target-alias" {
 # Create Session Recording Bucket
 # Delay creation to give the worker time to register
 #
-#resource "time_sleep" "worker_timer" {
-#  depends_on = [aws_instance.worker]
-#  create_duration = "120s"
-#}
-#
-#resource "random_string" "bucket_string" {
-#  length = 4
-#  special = false
-#}
-#
-#resource "boundary_storage_bucket" "pie_session_recording_bucket" {
-#  depends_on = [time_sleep.worker_timer]
-#
-#  name        = "PIE Session Recording Bucket ${random_string.bucket_string.result}"
-#  description = "Session Recording bucket for PIE team"
-#  scope_id    = "global"
-#  plugin_name = "aws"
-#  bucket_name = aws_s3_bucket.boundary_recording_bucket.id
-#  attributes_json = jsonencode({
-#    "region"                    = var.region,
-#    disable_credential_rotation = true
-#  })
-#
-#  secrets_json = jsonencode({
-#    "access_key_id"     = aws_iam_access_key.boundary_user.id,
-#    "secret_access_key" = aws_iam_access_key.boundary_user.secret
-#  })
-#  worker_filter = "\"${var.region}\" in \"/tags/region\""
-#}
+resource "time_sleep" "worker_timer" {
+  depends_on = [aws_instance.worker]
+  create_duration = "120s"
+}
+
+resource "random_string" "bucket_string" {
+  length = 4
+  special = false
+}
+
+resource "boundary_storage_bucket" "pie_session_recording_bucket" {
+  depends_on = [time_sleep.worker_timer]
+
+  name        = "PIE Session Recording Bucket ${random_string.bucket_string.result}"
+  description = "Session Recording bucket for PIE team"
+  scope_id    = "global"
+  plugin_name = "aws"
+  bucket_name = aws_s3_bucket.boundary_recording_bucket.id
+  attributes_json = jsonencode({
+    "region"                    = var.region,
+    disable_credential_rotation = true
+  })
+
+  secrets_json = jsonencode({
+    "access_key_id"     = aws_iam_access_key.boundary_user.id,
+    "secret_access_key" = aws_iam_access_key.boundary_user.secret
+  })
+  worker_filter = "\"${var.region}\" in \"/tags/region\""
+}
 
 # Set up Permissions to list aliases
 resource "boundary_role" "list_aliases" {
