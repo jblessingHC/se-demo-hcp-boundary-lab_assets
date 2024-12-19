@@ -251,7 +251,7 @@ resource "boundary_target" "pie-ssh-cert-target" {
     boundary_credential_library_vault_ssh_certificate.ssh_cert.id
   ]
   egress_worker_filter     = "\"${var.region}\" in \"/tags/region\""
- enable_session_recording = false
+ enable_session_recording = true
  storage_bucket_id        = boundary_storage_bucket.pie_session_recording_bucket.id
 }
 
@@ -275,7 +275,7 @@ resource "boundary_target" "pie-ssh-cert-target-admin" {
     boundary_credential_library_vault_ssh_certificate.ssh_cert_admin.id
   ]
   egress_worker_filter     = "\"${var.region}\" in \"/tags/region\""
- enable_session_recording = false
+ enable_session_recording = true
  storage_bucket_id        = boundary_storage_bucket.pie_session_recording_bucket.id
 }
 
